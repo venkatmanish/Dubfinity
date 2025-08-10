@@ -1,0 +1,16 @@
+# Short, punchy prompts for stage demos
+
+[Hindi → Telugu]
+"नमस्ते! आज हम डबिंग का जादू दिखाने वाले हैं। तैयार?"
+
+[Hindi → English]
+"यह डेमो रीयल-टाइम डबिंग और कस्टम वॉइसेज़ दिखाता है।"
+
+[Hindi → Kannada]
+"ಸ್ವಾಗತ! ಇದು ನಮ್ಮ ತ್ವರಿತ ಡಬ್ಬಿಂಗ್ ಪ್ರದರ್ಶನ."
+
+# Dialog-style (two segments)
+"हैलो, मैं शुरू करता हूँ।" | "ज़रूर, मैं तैयार हूँ।"
+
+# Tongue-twister (latency + stability test)
+"कच्चा पापड़, पक्का पापड़, पका पापड़ कच्चा पापड़।"

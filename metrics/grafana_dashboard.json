@@ -1,0 +1,115 @@
+{
+  "id": null,
+  "uid": "dubfinity-audio",
+  "title": "Dubfinity (Audio-Only) — Runtime",
+  "tags": ["dubfinity", "audio-only", "smallest.ai"],
+  "timezone": "browser",
+  "schemaVersion": 39,
+  "version": 1,
+  "refresh": "5s",
+  "panels": [
+    {
+      "type": "stat",
+      "title": "Requests (Total)",
+      "gridPos": { "h": 5, "w": 6, "x": 0, "y": 0 },
+      "options": {
+        "reduceOptions": { "calcs": ["lastNotNull"] },
+        "orientation": "horizontal"
+      },
+      "targets": [
+        {
+          "expr": "sum(dubfinity_requests_total)",
+          "legendFormat": "all",
+          "refId": "A"
+        }
+      ]
+    },
+    {
+      "type": "stat",
+      "title": "Current Latency (p95, sec)",
+      "gridPos": { "h": 5, "w": 6, "x": 6, "y": 0 },
+      "options": { "reduceOptions": { "calcs": ["lastNotNull"] } },
+      "targets": [
+        {
+          "expr": "quantile_over_time(0.95, dubfinity_request_latency_seconds[5m])",
+          "legendFormat": "p95",
+          "refId": "A"
+        }
+      ]
+    },
+    {
+      "type": "graph",
+      "title": "Request Latency (sec) by Endpoint",
+      "gridPos": { "h": 9, "w": 12, "x": 0, "y": 5 },
+      "lines": true,
+      "targets": [
+        {
+          "expr": "rate(dubfinity_request_latency_seconds_count[1m])",
+          "legendFormat": "{{endpoint}} (count)",
+          "refId": "A"
+        },
+        {
+          "expr": "sum by (endpoint) (rate(dubfinity_request_latency_seconds_sum[1m])) / sum by (endpoint) (rate(dubfinity_request_latency_seconds_count[1m]))",
+          "legendFormat": "{{endpoint}} (avg)",
+          "refId": "B"
+        }
+      ],
+      "yaxes": [{ "format": "s" }, { "format": "short" }]
+    },
+    {
+      "type": "table",
+      "title": "Requests by Method/Status",
+      "gridPos": { "h": 9, "w": 12, "x": 12, "y": 5 },
+      "targets": [
+        {
+          "expr": "sum by (endpoint, method, status_code) (dubfinity_requests_total)",
+          "legendFormat": "{{endpoint}} {{method}} {{status_code}}",
+          "refId": "A"
+        }
+      ],
+      "options": { "showHeader": true }
+    },
+    {
+      "type": "graph",
+      "title": "Token Usage (per model)",
+      "gridPos": { "h": 8, "w": 12, "x": 0, "y": 14 },
+      "targets": [
+        {
+          "expr": "rate(dubfinity_token_usage_total[1m])",
+          "legendFormat": "{{model}}",
+          "refId": "A"
+        }
+      ],
+      "yaxes": [{ "format": "ops" }, { "format": "short" }]
+    },
+    {
+      "type": "stat",
+      "title": "Inference Cost (USD)",
+      "gridPos": { "h": 8, "w": 6, "x": 12, "y": 14 },
+      "options": {
+        "reduceOptions": { "calcs": ["lastNotNull"], "fields": "" }
+      },
+      "targets": [
+        {
+          "expr": "sum(dubfinity_inference_cost_usd_total)",
+          "legendFormat": "USD",
+          "refId": "A"
+        }
+      ]
+    },
+    {
+      "type": "graph",
+      "title": "Live Endpoint Latency (seconds)",
+      "gridPos": { "h": 8, "w": 6, "x": 18, "y": 14 },
+      "targets": [
+        {
+          "expr": "dubfinity_current_latency_seconds",
+          "legendFormat": "{{endpoint}}",
+          "refId": "A"
+        }
+      ],
+      "yaxes": [{ "format": "s" }, { "format": "short" }]
+    }
+  ],
+  "templating": { "list": [] }
+}

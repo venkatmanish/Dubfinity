@@ -1,0 +1,20 @@
+{
+  "name": "dubfinity-ai",
+  "version": "1.0.0",
+  "description": "Multilingual **audio dubbing** for Hindi → **Telugu / English / Kannada** using Smallest.ai (Waves + Atoms). Audio in → transcription → translation → per-segment TTS with **pre-cloned voices** → stitched WAV out. Includes real-time WS TTS and LLM→speech streaming (optional).",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "react": "^19.1.1",
+    "react-dom": "^19.1.1"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-react": "^5.0.0",
+    "vite": "^7.1.1"
+  }
+}

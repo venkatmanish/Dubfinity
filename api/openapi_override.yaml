@@ -1,0 +1,118 @@
+openapi: 3.0.3
+info:
+  title: Dubfinity AI (Audio-Only)
+  version: "1.0.0"
+  description: |
+    Hindi → Telugu/English/Kannada audio dubbing using Smallest.ai.
+    - /v1/voices – list pre-cloned voices (from demos/demo_assets/voice_ids.json)
+    - /v1/tts – synthesize speech for a text + actor voice
+    - /v1/translate – (stub) translate text; wire Atoms chat later
+    - /v1/dub-audio – upload Hindi WAV → dubbed WAV (audio-only pipeline)
+    - /ws/tts – stream TTS audio
+    - /ws/llm_tts – stream LLM→speech (demo)
+
+servers:
+  - url: http://localhost:8000
+    description: Local dev
+
+paths:
+  /health:
+    get:
+      summary: Liveness/readiness probe
+      responses:
+        "200":
+          description: OK
+
+  /v1/voices:
+    get:
+      summary: List available pre-cloned voices
+      responses:
+        "200":
+          description: Array of voices
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    actor:
+                      type: string
+                    voice_id:
+                      type: string
+
+  /v1/tts:
+    post:
+      summary: Text to speech (sync)
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                text: { type: string }
+                actor:
+                  {
+                    type: string,
+                    description: Actor name key in voice_ids.json,
+                  }
+                lang: { type: string, enum: [te, en, kn], default: te }
+      responses:
+        "200":
+          description: WAV audio
+          content:
+            audio/wav: {}
+
+  /v1/translate:
+    post:
+      summary: Translate (Hindi → target)
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                text:
+                  {
+                    oneOf:
+                      [
+                        { type: string },
+                        { type: array, items: { type: string } },
+                      ],
+                  }
+                target_lang: { type: string, enum: [te, en, kn] }
+      responses:
+        "200":
+          description: Translation result
+          content:
+            application/json: {}
+
+  /v1/dub-audio:
+    post:
+      summary: Dub an uploaded Hindi WAV to the target language
+      parameters:
+        - name: target_lang
+          in: query
+          schema: { type: string, enum: [te, en, kn], default: te }
+        - name: actor
+          in: query
+          schema: { type: string, nullable: true }
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                file:
+                  type: string
+                  format: binary
+      responses:
+        "200":
+          description: WAV audio
+          content:
+            audio/wav: {}
+
+components: {}

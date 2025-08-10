@@ -1,0 +1,32 @@
+modes:
+  global_mode: true
+  use_flows_by_default: true
+  lipsync_enabled: false # audio-only build
+  watermark_enabled: true
+
+languages:
+  source_default: hi # Hindi
+  targets: [te, en, kn] # Telugu, English, Kannada
+
+flows:
+  default_realtime_voice_clone: ${FLOW_IDS__REALTIME_VOICE_CLONE:}
+  default_multilingual_tts: ${FLOW_IDS__MULTILINGUAL_TTS:}
+  default_fast_dub: ${FLOW_IDS__FAST_DUB:}
+
+thresholds:
+  latency_ms_target: 450
+  qa_max_wer: 0.18
+  max_regenerations: 1
+
+output:
+  audio_only: true
+  # wav/mp3; we return wav by default for quality
+  format: wav
+
+storage:
+  backend: local # local | s3
+  local_tmp: ./.tmp
+
+telemetry:
+  prometheus_enabled: true
+  otel_enabled: false

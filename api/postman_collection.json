@@ -1,0 +1,64 @@
+{
+  "info": {
+    "name": "Dubfinity AI (Audio-Only)",
+    "_postman_id": "f423b9b9-2b5e-4f1e-b6ab-abc123456789",
+    "description": "Hindi → Telugu/English/Kannada dubbing using Smallest.ai.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    { "key": "baseUrl", "value": "http://localhost:8000" },
+    { "key": "actor", "value": "AamirKhan" },
+    { "key": "lang", "value": "te" }
+  ],
+  "item": [
+    {
+      "name": "Health",
+      "request": { "method": "GET", "url": "{{baseUrl}}/health" }
+    },
+    {
+      "name": "List Voices",
+      "request": { "method": "GET", "url": "{{baseUrl}}/v1/voices" }
+    },
+    {
+      "name": "TTS (sync)",
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "url": "{{baseUrl}}/v1/tts",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"text\": \"नमस्ते, यह एक परीक्षण है।\",\n  \"actor\": \"{{actor}}\",\n  \"lang\": \"{{lang}}\"\n}"
+        }
+      }
+    },
+    {
+      "name": "Translate",
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "url": "{{baseUrl}}/v1/translate",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"text\": \"यह एक परीक्षण है\",\n  \"target_lang\": \"{{lang}}\"\n}"
+        }
+      }
+    },
+    {
+      "name": "Dub Audio (upload WAV)",
+      "request": {
+        "method": "POST",
+        "url": "{{baseUrl}}/v1/dub-audio?target_lang={{lang}}&actor={{actor}}",
+        "body": {
+          "mode": "formdata",
+          "formdata": [
+            {
+              "key": "file",
+              "type": "file",
+              "src": "dataset/test/scenes_hi/scene_01.wav"
+            }
+          ]
+        }
+      }
+    }
+  ]
+}
