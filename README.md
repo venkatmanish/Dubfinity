@@ -17,6 +17,9 @@ Prometheus metrics (+ ready-to-import Grafana dashboard)
 Production-friendly layout (FastAPI backend + React/Vite frontend)
 
 Architecture
+bash
+Copy
+Edit
 backend/
   agents/
     orchestrator_agent.py    # LBTF model switching (latency/quality budget)
@@ -51,7 +54,6 @@ frontend/web/
   vite.config.js             # dev proxy (/v1, /ws -> 127.0.0.1:8000)
 demos/demo_assets/
   voice_ids.json             # your 5 pre-cloned voices (actor -> voice_id)
-
 LBTF Orchestrator (where it lives):
 
 backend/agents/orchestrator_agent.py decides between e.g. "lightning" and "lightning-large" TTS models and sets chunk sizes / speed knobs based on latency target and text length.
@@ -290,7 +292,9 @@ scrape_configs:
     static_configs:
       - targets: ['127.0.0.1:8000']
 8) Testing
-
+bash
+Copy
+Edit
 pytest -q
 # tests/*
 Smoke tests include:
@@ -303,7 +307,9 @@ test_latency_agent.py
 
 9) Docker & Cloud (optional)
 Docker Compose
-
+bash
+Copy
+Edit
 docker compose -f cloud_deploy/docker-compose.yml up --build
 # backend on 8000, frontend on 5173 (adjust compose if needed)
 Helm (GKE/EKS)
@@ -346,7 +352,7 @@ Also ensure the <audio> has a valid src created from Blob([bytes], {type:"audio/
 Mic / WS TTS errors
 Allow microphone permissions in the browser and ensure websockets aren’t blocked by a corporate proxy.
 
-12) Why this wins hackathons
+12) USP
 Production-minded: Clean separation of agents, pipelines, and routes.
 
 Cloud-ready: Helm charts + metrics out of the box.
